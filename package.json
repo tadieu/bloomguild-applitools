@@ -1,0 +1,33 @@
+{
+  "name": "bloomguild-applitools",
+  "version": "1.0.0",
+  "description": "Bloomguild's suggested integration with Applitools and AWS Lambda for positive, powerful integration testing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dlumma/bloomguild-applitools.git"
+  },
+  "keywords": [
+    "integration",
+    "testing",
+    "visual",
+    "continuous",
+    "serverless",
+    "lambda",
+    "headless",
+    "chrome"
+  ],
+  "author": "Denali <denali@bloomguild.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dlumma/bloomguild-applitools/issues"
+  },
+  "homepage": "https://github.com/dlumma/bloomguild-applitools#readme",
+  "dependencies": {
+    "chromeless": "1.2.0"
+  },
+  "devDependencies": {}
+}
