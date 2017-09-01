@@ -6,7 +6,7 @@ async function run() {
     })
 
     const screenshot = await chromeless
-        .goto('https://sunbasket.com')
+        .goto(process.env.SUNBASKET_DOMAIN)
         .screenshot()
 
     console.log(screenshot) // prints local file path or S3 url
@@ -19,3 +19,7 @@ async function run() {
 }
 
 run().catch(console.error.bind(console));
+
+module.exports = {
+    run: run
+}
