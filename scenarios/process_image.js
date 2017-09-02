@@ -6,7 +6,7 @@ async function get_keyname(screenshot){
     return key_name;
 }
 
-async function process_file(screenshot) {
+async function process_file(screenshot, view_name) {
     var s3 = require('s3');
 
     var client = await s3.createClient({
@@ -32,6 +32,7 @@ async function process_file(screenshot) {
         },
     };
     console.log('key is: ', key_name);
+    console.log('view_name is: ', view_name);
     var downloader = await client.downloadFile(params);
     await downloader.on('error', function (err) {
         console.error("unable to download:", err.stack);
@@ -41,7 +42,7 @@ async function process_file(screenshot) {
     });
     await downloader.on('end', function () {
         console.log("done downloading");
-        send_to_applitools(key_name);
+        send_to_applitools(key_name, view_name);
     });
 
     console.log('reached the end of the download_file function')
@@ -49,10 +50,16 @@ async function process_file(screenshot) {
 }
 
 
-async function send_to_applitools(key_name) {
+async function send_to_applitools(key_name, view_name) {
     // send the image file to applitools via the ImageTester jar
     var exec = require('child_process').exec;
-    var child = await exec('java -jar ImageTester.jar -k ' + process.env.APPLITOOLS_API_KEY + ' -f images/' + key_name,
+    var child = await exec('java -jar ImageTester.jar -k ' + 
+                            process.env.APPLITOOLS_API_KEY + 
+                            ' -a ' + process.env.APP_UNDER_TEST +
+                            ' -ap ' + process.env.AUT_DOMAIN +
+                            ' -br ' + process.env.BRANCH +
+                            ' -bn ' + view_name +
+                            ' -f images/' + key_name,
         function (error, stdout, stderr) {
             console.log('Output -> ' + stdout);
             if (error !== null) {

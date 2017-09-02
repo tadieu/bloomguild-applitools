@@ -6,7 +6,7 @@ async function run() {
     })
 
     const screenshot = await chromeless
-        .goto(process.env.SUNBASKET_DOMAIN)
+        .goto(process.env.AUT_DOMAIN)
         .screenshot()
 
     console.log(screenshot) // prints local file path or S3 url
@@ -14,7 +14,7 @@ async function run() {
     await chromeless.end()
 
     var process_image = require('./process_image.js');
-    await process_image.process_file(screenshot); 
+    await process_image.process_file(screenshot, 'external_landing_view'); 
 
 }
 

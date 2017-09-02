@@ -9,7 +9,7 @@ async function run() {
     var login_page = require('./../pages/login_page.js');
 
     const screenshot = await chromeless
-        .goto(buildUrl(process.env.SUNBASKET_DOMAIN, {
+        .goto(buildUrl(process.env.AUT_DOMAIN, {
             path: login_page.path
             }
             ))   
@@ -20,7 +20,7 @@ async function run() {
     await chromeless.end()
 
     var process_image = require('./process_image.js');
-    await process_image.process_file(screenshot); 
+    await process_image.process_file(screenshot, 'external_login_view'); 
 
 }
 
