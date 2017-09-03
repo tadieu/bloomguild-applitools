@@ -24,7 +24,7 @@ async function process_file(screenshot, view_name) {
     const key_name = await get_keyname(screenshot);
     // download the image file
     var params = {
-        localFile: 'images/' + key_name,
+        localFile: 'images/' + view_name +'.png',
 
         s3Params: {
             Bucket: process.env.S3_BUCKET_NAME,
@@ -42,15 +42,12 @@ async function process_file(screenshot, view_name) {
     });
     await downloader.on('end', function () {
         console.log("done downloading");
-        send_to_applitools(key_name, view_name);
+        send_to_applitools(view_name);
     });
-
-    console.log('reached the end of the download_file function')
-    return 2;
 }
 
 
-async function send_to_applitools(key_name, view_name) {
+async function send_to_applitools(view_name) {
     // send the image file to applitools via the ImageTester jar
     var exec = require('child_process').exec;
     var child = await exec('java -jar ImageTester.jar ' +  
@@ -58,7 +55,7 @@ async function send_to_applitools(key_name, view_name) {
                             ' -ap ' + process.env.AUT_DOMAIN +
                             ' -bn ' + view_name +
                             ' -br ' + process.env.BRANCH +
-                            ' -f images/' + key_name +
+                            ' -f images/' + view_name + '.png' +
                             ' -k ' + 
                             process.env.APPLITOOLS_API_KEY +
                             ' -os awsLambda',
@@ -67,15 +64,15 @@ async function send_to_applitools(key_name, view_name) {
             if (error !== null) {
                 console.log("Error -> " + error);
             }
-            delete_local_image(key_name);
+            delete_local_image(view_name);
         });
     module.exports = child;
 }
 
-async function delete_local_image(key_name) {
+async function delete_local_image(view_name) {
     // delete the image from local disk
     var fs = require('fs');
-    var filePath = './images/' + key_name;
+    var filePath = './images/' + view_name + '.png';
     fs.unlink(filePath, function (err) {
         if (err && err.code == 'ENOENT') {
             // file doens't exist
