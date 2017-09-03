@@ -53,13 +53,15 @@ async function process_file(screenshot, view_name) {
 async function send_to_applitools(key_name, view_name) {
     // send the image file to applitools via the ImageTester jar
     var exec = require('child_process').exec;
-    var child = await exec('java -jar ImageTester.jar -k ' + 
-                            process.env.APPLITOOLS_API_KEY + 
+    var child = await exec('java -jar ImageTester.jar ' +  
                             ' -a ' + process.env.APP_UNDER_TEST +
                             ' -ap ' + process.env.AUT_DOMAIN +
-                            ' -br ' + process.env.BRANCH +
                             ' -bn ' + view_name +
-                            ' -f images/' + key_name,
+                            ' -br ' + process.env.BRANCH +
+                            ' -f images/' + key_name +
+                            ' -k ' + 
+                            process.env.APPLITOOLS_API_KEY +
+                            ' -os awsLambda',
         function (error, stdout, stderr) {
             console.log('Output -> ' + stdout);
             if (error !== null) {
