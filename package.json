@@ -29,6 +29,7 @@
   "dependencies": {
     "build-url": "1.0.10",
     "chromeless": "1.2.0",
+    "eyes.images": "0.0.43",
     "s3": "4.4.0",
     "url": "0.11.0"
   },
